@@ -1,4 +1,4 @@
-# Djikstra_Algorithm
+# Dijkstra_Algorithm
 Implementation of Djikstra's path planning algorithm using python
 
 Installation
