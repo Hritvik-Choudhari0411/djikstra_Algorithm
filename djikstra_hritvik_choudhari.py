@@ -1,7 +1,10 @@
+# Import all libraries
 import numpy as np
 import matplotlib.pyplot as plt
 import cv2
+import time
 
+start = time.time()
 # Class containing node attributes
 class createNode:
     def __init__(self, pos, parent, c2c):
@@ -83,21 +86,10 @@ def invade_obstacle(loc):
     x, y = loc
     gap = 5
 
-    h1 = (-40 / 69) * x + (8764 / 69)
-    h2 = 369
-    h3 = (40 / 69) * x - (13812 / 69)
-    h4 = (-4 / 7) * x + (8492 / 7)
-    h5 = 230
-    h6 = (4 / 7) * x - (732 / 7)
-
-    t1 = (-114 / 59) * x + (9955 / 59)
-    t2 = (114 / 59) * x + (6515 / 59)
-    t3 = 457
-
-    if y < h1 and x < h2 and y > h3 and y > h4 and x > h5 and y < h6:
+    if ((x >= (235 - gap)) and (x <= (365 + gap)) and ((x + 2 * y) >= 395) and ((x - 2 * y) <= 205) and ((x - 2 * y) >= -105) and ((x + 2 * y) <= 705)):
         return False
 
-    if y < t1 and y > t2 and x > t3:
+    if ((y >= 1.75 * x - 776.25) and (y <= -1.75 * x + 1026.25) and (x >= 460 - gap)):
         return False
 
     if (x < xMin + gap) or (y < yMin + gap) or (x >= xMax - gap) or (y >= yMax - gap):
@@ -201,7 +193,7 @@ def backtrack(current_node):
 
 # Djikstra's path planning algorithm
 def djikstra_algo(start_pos, goal_pos):
-    save = cv2.VideoWriter('video.avi', cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'), 10, (600 + 1, 250 + 1))
+    save = cv2.VideoWriter(r'C:\Users\hritv\Desktop\Spring 23\Planning\Project2\video2.avi', cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'), 10, (600 + 1, 250 + 1))
     grid = Obstacle_space((600, 250))
     if not invade_obstacle(start_pos):
         print("start_pos position is in Obstacle grid")
@@ -253,6 +245,12 @@ def djikstra_algo(start_pos, goal_pos):
                     grid[grid.shape[0] - y - 1, x] = [255, 255, 50]
                     save.write(grid)
         
-startpoint = int(input('Enter the start node x,y coordinate in tuple:'))
-goalpoint = int(input('Enter the goal node x,y coordinate in tuple:'))
+startpoint_x = int(input('Enter the start node x coordinate:'))
+startpoint_y = int(input('Enter the start node y coordinate:'))
+goalpoint_x = int(input('Enter the goal node x coordinate:'))
+goalpoint_y = int(input('Enter the goal node y coordinate:'))
+startpoint = (startpoint_x,startpoint_y)
+goalpoint= (goalpoint_x,goalpoint_y)
 path_plan = djikstra_algo(startpoint, goalpoint)
+end = time.time()
+print((end - start)/60, 'sec')
